@@ -34,7 +34,6 @@ function init3DBackground() {
   container.appendChild(bgRenderer.domElement);
   
   // Setup 3D Scene
-  createMovingStarfield();
   createBackground3DObjects();
   addBackgroundLighting();
   
@@ -349,29 +348,7 @@ function animate3DBackground() {
   
   // Update objects
   bgObjects.forEach(obj => {
-    if (obj.isStarfield) {
-      // Update starfield positions for slow movement
-      const positionAttribute = obj.geometry.getAttribute("position");
-      const positions = positionAttribute.array;
-      
-      starField.forEach((star, index) => {
-        // Circular movement for each star with slow speed
-        star.angle += star.speed;
-        
-        const newX = Math.cos(star.angle) * star.radius + (mouse.x * 20);
-        const newY = Math.sin(star.angle) * star.radius + (mouse.y * 20);
-        const newZ = star.position.z + Math.sin(time * 0.5) * 0.5;
-        
-        positions[index * 3] = newX;
-        positions[index * 3 + 1] = newY;
-        positions[index * 3 + 2] = newZ;
-      });
-      
-      positionAttribute.needsUpdate = true;
-      obj.mesh.rotation.x += 0.0001;
-      obj.mesh.rotation.y += 0.0002;
-      
-    } else if (obj.isParticles) {
+    if (obj.isParticles) {
       obj.mesh.rotation.x += 0.0001;
       obj.mesh.rotation.y += 0.0002;
     } else {
